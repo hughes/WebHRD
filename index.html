@@ -1,0 +1,60 @@
+<html>
+<head>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+    <script src="three.js"></script>
+    <script src="calibrate.js"></script>
+    <script id="vertexShader" type="x-shader/x-vertex">
+        varying vec2 vUv;
+
+        void main() {
+            vUv = uv;
+
+            gl_Position =   projectionMatrix * 
+                            modelViewMatrix * 
+                            vec4(position,1.0);
+        }
+    </script>
+    <script id="fragmentShader" type="x-shader/x-fragment">
+        uniform sampler2D texture1;
+        uniform float SCALE;
+        uniform float P0;
+        uniform float P1;
+        uniform float P2;
+        uniform float P3;
+        uniform float P4;
+
+        varying vec2 vUv;
+
+        float scale(float r) {
+            float z = P0 + P1*r + P2*r*r + P3*r*r*r + P4*r*r*r*r;
+            return SCALE/z;
+        }
+
+        void main() {
+            float x = vUv.x - 0.5;
+            float y = vUv.y - 0.5;
+            float r2 = x*x + y*y;
+            float r = sqrt(r2);
+            float angle = 0.0;
+            if (x != 0.0) {
+                angle = atan(y, x);
+            }
+            float s = scale(r);
+            // s = 1.0;
+            vec2 v;
+            v.x = x*s + 0.5;
+            v.y = y*s + 0.5;
+            gl_FragColor = texture2D(texture1, v);
+            // gl_FragColor = vec4(P1/10.0, P2/10.0, P3/10.0, 1.0);
+        }
+    </script>
+</head>
+<body>
+    SCALE <input type="range" step="1" min="1" max="200" value="75" id="SCALE" /><br />
+    P0 <input type="range" step="1" min="1" max="200" value="75" id="P0" /><br />
+    P1 <input type="range" step="0.01" min="1" max="10" value="1" id="P1" /><br />
+    P2 <input type="range" step="0.01" min="1" max="10" value="1" id="P2" /><br />
+    P3 <input type="range" step="0.01" min="1" max="10" value="1" id="P3" /><br />
+    P4 <input type="range" step="0.01" min="1" max="10" value="1" id="P4" />
+</body>
+</html>
