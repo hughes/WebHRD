@@ -12,9 +12,9 @@ $(document).ready(function () {
     var fragShader = document.getElementById('fragmentShader').innerHTML;
 
     window.uniforms = {
-        "texture1": { type: "t", value: THREE.ImageUtils.loadTexture( "Radial_barrel.jpg" ) },
-        "SCALE": { type: "f", value: 100.0 },
-        "P0": {type: "f", value: 100.0 },
+        "texture1": { type: "t", value: THREE.ImageUtils.loadTexture( "radial2.jpg" ) },
+        "SCALE": { type: "f", value: 75.0 },
+        "P0": {type: "f", value: 75.0 },
         "P1": {type: "f", value: 0.5 },
         "P2": {type: "f", value: 0.0 },
         "P3": {type: "f", value: 0.0 },
